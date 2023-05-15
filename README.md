@@ -1,6 +1,10 @@
+## Tip for understanding the code better
+
+Read the table of content inside "src/pages/dish-form/index.jsx" (at the top of the file) & use "Ctrl + F" to find specific chapters inside the code. It will help you understand the flow of the application better.
+
 ## Warning
 
-Images, which are supposed to load next to the "Submit" button, are only working on the development server. They dont show up on the published website. This is a bug that I didn't have time to fix, unfortunately.
+Images, which are supposed to load next to the "Submit" button, are only working on the development server. They dont show up on the published website. This is a bug that I didn't have time to fix yet, unfortunately.
 
 ## Node & NPM versions used during development
 

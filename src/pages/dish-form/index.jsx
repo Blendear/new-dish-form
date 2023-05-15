@@ -1,48 +1,67 @@
+// [ TABLE OF CONTENT ]
 //
-//~~ _.  Form that's setting the dish data
-//
-//       _._. Time picker with "HH:MM:SS" format
-//
-//           _._._. 3 inputs - for hours, minutes and seconds, separately
-//
-//           _._._.
-//
-//           _._._.
-//
-//           _._._.
-//
-//       _._. Type of dish selector
-//
-//           _._._. JSX for the user
-//
-//           _._._. Handler - sets dish type state
-//
-//       _._. Dedicated input fields for Pizza, Soup or Sandwich's, conditionally rendered, depending on the selected type of dish
-//
-//           _._._. JSX data of special input fields
-//
-//           _._._. Conditional rendering of special input fields
+//~~ 1.  Imports - necessary for this file to work
 //
 //
-//~~ _.  "Submit" button makes a POST request with out dish data
 //
-//       _._. Connecting "onSubmit" to our "redux-form" component
+//~~ 2.  Form that's setting the dish data
 //
-//       _._. Handler - activates the POST request when the form is submitted
+//       2.1. Time picker with "HH:MM:SS" format
 //
-//       _._. Handler - sends a POST request with the form data about our new dish
+//           2.1.1. 3 inputs - for hours, minutes and seconds, separately
 //
-// hook1 read me file   &   time file
+//       2.2. Type of dish selector
+//
+//           2.2.1. JSX for the user
+//
+//           2.2.2. Handler - sets dish type state
+//
+//           2.2.3. State - stores dish type state
 
-//hook1 - opisz komenatrzami wszystkie korki wszystkiego
+//       2.3. Dedicated input fields for Pizza, Soup or Sandwich's, conditionally rendered, depending on the selected type of dish
+//
+//           2.3.1. JSX data of special input fields
+//
+//           2.3.2. Conditional rendering of special input fields
+//
+//
+//
+//~~ 3.  Dynamic image for visualizing the properties chosen/given through input fields (Conditionally rendered, if type of dish is chosen)
+//
+//       3.1. PNG - for the user
+//
+//           3.1.1. Dynamic source path, depending on the states of "typeOfDish" & "nrOfImage"
+//
+//       3.2.. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
+//
+//
+//
+//~~ 4.  "Submit" button makes a POST request with out dish data
+//
+//       4.1. Connecting "onSubmit" to our "redux-form" component
+//
+//       4.2. Handler - activates the POST request when the form is submitted
+//
+//       4.3. Handler - sends a POST request with the form data about our new dish
+//
+//           4.3.1. Variables - which stores the input field's data (which is formated and updated with conditional content)
+//
+//           4.3.2. Fetch POST request - for testing (development) purposes only
+//
+//           4.3.3. Fetch POST request - the one used for production
+//
+//
+
+//~~ 1.  Imports - necessary for this file to work
+
 import styles from "src/styles/sass/styles-all.module.scss";
-
 import { Field, reduxForm } from "redux-form";
 import { useState } from "react";
 import Image from "next/image";
-//~~ _.  "Submit" button makes a POST request with out dish data
 
-//       _._. Handler - activates the POST request when the form is submitted
+//~~ 4.  "Submit" button makes a POST request with out dish data
+
+//       4.2. Handler - activates the POST request when the form is submitted
 
 const onSubmit = (values) => {
   // console.log("onSubmit activated");
@@ -62,10 +81,12 @@ const createTimeStringHandler = (h, m, s) => {
   return timeNumbers[0].concat(":", timeNumbers[1]).concat(":", timeNumbers[2]);
 };
 
-//       _._. Handler - sends a POST request with the form data about our new dish
+//       4.3. Handler - sends a POST request with the form data about our new dish
 
 const postRequestHandler = async (dishData) => {
-  console.log("postRH activated");
+  // console.log("postRH activated");
+
+  //           4.3.1. Variables - which stores the input field's data (which is formated and updated with conditional content)
 
   const timeString = createTimeStringHandler(
     dishData.timeHours,
@@ -76,7 +97,7 @@ const postRequestHandler = async (dishData) => {
   let conditionalDataHandler = {};
 
   switch (dishData.dishType) {
-    case "Pizza":
+    case "pizza":
       conditionalDataHandler = {
         name: dishData.dishName,
 
@@ -87,7 +108,7 @@ const postRequestHandler = async (dishData) => {
         no_of_slices: dishData.numberOfSlices,
       };
       break;
-    case "Soup":
+    case "soup":
       conditionalDataHandler = {
         name: dishData.dishName,
         preparation_time: timeString,
@@ -95,7 +116,7 @@ const postRequestHandler = async (dishData) => {
         spiciness_level: dishData.spicinesScale,
       };
       break;
-    case "Sandwich":
+    case "sandwich":
       conditionalDataHandler = {
         name: dishData.dishName,
         preparation_time: timeString,
@@ -104,12 +125,29 @@ const postRequestHandler = async (dishData) => {
       };
       break;
   }
+  //           4.3.2. Fetch POST request - for testing (development) purposes only
 
   fetch("https://enplyd8uecj8h.x.pipedream.net/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(conditionalDataHandler),
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      return res;
+    })
+    .catch((error) => {
+      console.error("Something went wrong", error);
+    });
+
+  //           4.3.3. Fetch POST request - the one used for production
+
+  fetch("https://umzzcc503l.execute-api.us-west-2.amazonaws.com/dishes/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      conditionalDataHandler,
+      ...conditionalDataHandler,
     }),
   })
     .then((response) => response.json())
@@ -123,9 +161,14 @@ const postRequestHandler = async (dishData) => {
 };
 
 const SimpleForm = (props) => {
-  const { handleSubmit, pristine, reset, submitting } = props;
+  const { handleSubmit, pristine, submitting } = props;
+
+  //           2.2.3. State - stores dish type state
 
   const [typeOfDish, setTypeOfDish] = useState("");
+
+  //       3.2.. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
+
   const [nrOfImage, setNrOfImage] = useState("2");
 
   const changeNrOfPizzaSlicesHandler = (event) => {
@@ -133,7 +176,7 @@ const SimpleForm = (props) => {
     if (newValue < 2 || newValue > 8) {
       return;
     }
-    // setNrOfPizzaSlices(newValue);
+
     setNrOfImage(newValue);
   };
   const changePizzaDiameterHandler = (event) => {
@@ -141,14 +184,13 @@ const SimpleForm = (props) => {
     if (newValue < 23 || newValue > 48) {
       return;
     }
-    // setPizzaDiameter(newValue);
   };
   const changeLevelOfSpicinessHandler = (event) => {
     const newValue = event.target.value;
     if (newValue < 1 || newValue > 10) {
       return;
     }
-    // setSpicinessLevel(newValue);
+
     setNrOfImage(newValue);
   };
   const changeNrOfBreadSlicesHandler = (event) => {
@@ -156,10 +198,10 @@ const SimpleForm = (props) => {
     if (newValue < 2 || newValue > 6) {
       return;
     }
-    // setNrOfBreadSlices(newValue);
+
     setNrOfImage(newValue);
   };
-  //           _._._. JSX data of special input fields
+  //           2.3.1. JSX data of special input fields
 
   const [dishesSpecialInputFields, setDishesSpecialInputFields] = useState({
     pizza: (
@@ -286,7 +328,7 @@ const SimpleForm = (props) => {
     ),
   });
 
-  //           _._._. Handler - sets dish type state
+  //           2.2.2. Handler - sets dish type state
 
   const selectDishTypeHandler = (event) => {
     setTypeOfDish(event.target.value);
@@ -294,7 +336,7 @@ const SimpleForm = (props) => {
   };
 
   return (
-    //~~ _.  Form that's setting the dish data
+    //~~ 2.  Form that's setting the dish data
 
     <form
       onSubmit={handleSubmit}
@@ -330,11 +372,12 @@ const SimpleForm = (props) => {
         placeholder="Non-letters are allowed"
         required
       />
-      {/* form-new-dish-variant__input-field__prep-time__value__hh */}
-      {/* // _._. Time picker with "HH:MM:SS" format
-            
-            // _._._. 3 inputs - for hours, minutes and seconds, separately 
-*/}
+
+      {/* 
+      //       2.1. Time picker with "HH:MM:SS" format
+      //
+      //           2.1.1. 3 inputs - for hours, minutes and seconds, separately
+      */}
       <label
         className={
           styles["form-new-dish-variant__input-field__prep-time__title"]
@@ -404,9 +447,9 @@ const SimpleForm = (props) => {
       </div>
 
       {/* 
-      //       _._. Type of dish selector
+      //       2.2. Type of dish selector
             
-      //           _._._. JSX for the user
+      //           2.2.1. JSX for the user
       */}
 
       <label
@@ -427,19 +470,20 @@ const SimpleForm = (props) => {
         required
       >
         <option value=""></option>
-        <option value="Pizza">Pizza</option>
-        <option value="Soup">Soup</option>
-        <option value="Sandwich">Sandwich</option>
+        <option value="pizza">Pizza</option>
+        <option value="soup">Soup</option>
+        <option value="sandwich">Sandwich</option>
       </Field>
 
       {/*
-      _._. Dedicated input fields for Pizza, Soup or Sandwich's, conditionally rendered, depending on the selected type of dish
+      //       2.3. Dedicated input fields for Pizza, Soup or Sandwich's, conditionally rendered, depending on the selected type of dish
 
-      _._._. Conditional rendering of special input fields 
+      //           2.3.2. Conditional rendering of special input fields
+
       */}
-      {typeOfDish === "Pizza" && dishesSpecialInputFields.pizza}
-      {typeOfDish === "Soup" && dishesSpecialInputFields.soup}
-      {typeOfDish === "Sandwich" && dishesSpecialInputFields.sandwich}
+      {typeOfDish === "pizza" && dishesSpecialInputFields.pizza}
+      {typeOfDish === "soup" && dishesSpecialInputFields.soup}
+      {typeOfDish === "sandwich" && dishesSpecialInputFields.sandwich}
 
       <button
         className={styles["form-new-dish-variant__submit-btn"]}
@@ -448,6 +492,13 @@ const SimpleForm = (props) => {
       >
         Submit
       </button>
+      {/* 
+      //~~ 3.  Dynamic image for visualizing the properties chosen/given through input fields (Conditionally rendered, if type of dish is chosen)
+      //
+      //       3.1. PNG - for the user
+      //
+      //           3.1.1. Dynamic source path, depending on the states of "typeOfDish" & "nrOfImage"
+      */}
       {typeOfDish !== "" && (
         <div
           className={styles["form-new-dish-variant__image-of-dish-type__png"]}
@@ -467,7 +518,7 @@ const SimpleForm = (props) => {
 };
 
 export default reduxForm({
-  form: "simple", // a unique identifier for this form
-  // _._. Connecting "onSubmit" to our "redux-form" component
+  form: "simple",
+  // 4.1. Connecting "onSubmit" to our "redux-form" component
   onSubmit,
 })(SimpleForm);
