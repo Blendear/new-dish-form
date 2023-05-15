@@ -15,7 +15,7 @@ import Image from "next/image";
 const AComponent = () => {
   return (
     <div className={styles["layout-strona-glowna__cala-strona"]}>
-      _app - you shouldn't see that page
+      _app - you shouldn&apos;t see that page
     </div>
   );
 };

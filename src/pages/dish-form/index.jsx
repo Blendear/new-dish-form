@@ -33,7 +33,7 @@
 //       _._. Handler - sends a POST request with the form data about our new dish
 //
 // hook1 read me file   &   time file
-//hook1 -  github dodaj
+
 //hook1 - add typescript
 //hook1 - opiusz komenatrzami wszystkie korki wszystkiego
 import styles from "src/styles/sass/styles-all.module.scss";
