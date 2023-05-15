@@ -4,11 +4,5 @@
 
 @use "./base/base";
 @use "./base/helpers";
-// @use "./base/normalize";
-// hook1 - bug create dby this import /\
 
 @use "./components/form";
-
-@use "./layout/grids";
-
-@use "./pages/manage-dishes";
