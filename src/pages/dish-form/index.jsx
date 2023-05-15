@@ -34,8 +34,7 @@
 //
 // hook1 read me file   &   time file
 
-//hook1 - add typescript
-//hook1 - opiusz komenatrzami wszystkie korki wszystkiego
+//hook1 - opisz komenatrzami wszystkie korki wszystkiego
 import styles from "src/styles/sass/styles-all.module.scss";
 
 import { Field, reduxForm } from "redux-form";
