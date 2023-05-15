@@ -45,18 +45,18 @@ import Image from "next/image";
 //       _._. Handler - activates the POST request when the form is submitted
 
 const onSubmit = (values) => {
-  console.log("onSubmit activated");
-  alert(JSON.stringify(values));
+  // console.log("onSubmit activated");
+  // alert(JSON.stringify(values));
   postRequestHandler(values);
 };
 
 const createTimeStringHandler = (h, m, s) => {
   const timeNumbers = [h, m, s];
-  console.log("aa");
+
   for (let i = 0; i < 3; i++) {
     if (timeNumbers[i] < 10) {
       timeNumbers[i] = "0" + timeNumbers[i];
-      console.log(timeNumbers[i]);
+      // console.log(timeNumbers[i]);
     }
   }
   return timeNumbers[0].concat(":", timeNumbers[1]).concat(":", timeNumbers[2]);
@@ -73,13 +73,43 @@ const postRequestHandler = async (dishData) => {
     dishData.timeSeconds
   );
 
+  let conditionalDataHandler = {};
+
+  switch (dishData.dishType) {
+    case "Pizza":
+      conditionalDataHandler = {
+        name: dishData.dishName,
+
+        preparation_time: timeString,
+
+        type: dishData.dishType,
+        diameter: dishData.diameter,
+        no_of_slices: dishData.numberOfSlices,
+      };
+      break;
+    case "Soup":
+      conditionalDataHandler = {
+        name: dishData.dishName,
+        preparation_time: timeString,
+        type: dishData.dishType,
+        spiciness_level: dishData.spicinesScale,
+      };
+      break;
+    case "Sandwich":
+      conditionalDataHandler = {
+        name: dishData.dishName,
+        preparation_time: timeString,
+        type: dishData.dishType,
+        no_of_slices: dishData.numberOfSlicesOfBreadRequired,
+      };
+      break;
+  }
+
   fetch("https://enplyd8uecj8h.x.pipedream.net/", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      name: dishData.dishName,
-      preparation_time: timeString,
-      type: dishData.typeOfDish,
+      conditionalDataHandler,
     }),
   })
     .then((response) => response.json())
@@ -95,7 +125,7 @@ const postRequestHandler = async (dishData) => {
 const SimpleForm = (props) => {
   const { handleSubmit, pristine, reset, submitting } = props;
 
-  const [typeOfDish, setTypeOfDish] = useState("Pizza");
+  const [typeOfDish, setTypeOfDish] = useState("");
   const [nrOfImage, setNrOfImage] = useState("2");
 
   const changeNrOfPizzaSlicesHandler = (event) => {
@@ -392,10 +422,11 @@ const SimpleForm = (props) => {
           styles["form-new-dish-variant__input-field__dish-type__value"]
         }
         onChange={selectDishTypeHandler}
-        name="typeOfDish"
+        name="dishType"
         component="select"
         required
       >
+        <option value=""></option>
         <option value="Pizza">Pizza</option>
         <option value="Soup">Soup</option>
         <option value="Sandwich">Sandwich</option>
@@ -417,17 +448,20 @@ const SimpleForm = (props) => {
       >
         Submit
       </button>
-
-      <div className={styles["form-new-dish-variant__image-of-dish-type__png"]}>
-        <Image
-          src={`/images/form/${typeOfDish}/${nrOfImage}.png`}
-          alt={`Error with loading the image`}
-          layout="fill"
-          objectFit="contain"
-          priority
-          loading="eager"
-        />
-      </div>
+      {typeOfDish !== "" && (
+        <div
+          className={styles["form-new-dish-variant__image-of-dish-type__png"]}
+        >
+          <Image
+            src={`/images/form/${typeOfDish}/${nrOfImage}.png`}
+            alt={`Error with loading the image`}
+            layout="fill"
+            objectFit="contain"
+            priority
+            loading="eager"
+          />
+        </div>
+      )}
     </form>
   );
 };

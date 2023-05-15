@@ -1,3 +1,7 @@
+## Warning
+
+Images, which are supposed to load next to the "Submit" button, are only working on the development server. They dont show up on the published website. This is a bug that I didn't have time to fix, unfortunately.
+
 ## Node & NPM versions used during development
 
 - Node 14.16.1
