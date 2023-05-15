@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    domains: ["https://new-dish-form-rho.vercel.app/dish-form"],
+  },
 };
 
 module.exports = nextConfig;
