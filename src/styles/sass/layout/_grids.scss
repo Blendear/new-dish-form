@@ -1,0 +1,33 @@
+// @mixin grid-custom-(
+//   $rows-nr: null,
+//   $columns-nr: null,
+//   $gap: null,
+//   $row-gap: null,
+//   $column-gap: null
+// ) {
+//   display: grid;
+
+//   grid-template-rows: $rows-nr;
+//   grid-template-columns: $columns-nr;
+
+//   gap: $gap;
+//   row-gap: $row-gap;
+//   column-gap: $column-gap;
+// }
+
+// @mixin grid-dynamic(
+//   $rows-nr: null,
+//   $columns-nr: null,
+//   $gap: null,
+//   $row-gap: null,
+//   $column-gap: null
+// ) {
+//   display: grid;
+
+//   grid-template-rows: $rows-nr;
+//   grid-template-columns: $columns-nr;
+
+//   gap: $gap;
+//   row-gap: $row-gap;
+//   column-gap: $column-gap;
+// }
