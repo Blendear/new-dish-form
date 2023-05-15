@@ -420,7 +420,7 @@ const SimpleForm = (props) => {
 
       <div className={styles["form-new-dish-variant__image-of-dish-type__png"]}>
         <Image
-          src={`/images/form/${typeOfDish}/${nrOfImage}.png`}
+          src={`/form/${typeOfDish}/${nrOfImage}.png`}
           alt={`Error with loading the image`}
           layout="fill"
           objectFit="contain"
