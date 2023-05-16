@@ -351,7 +351,6 @@ const SimpleForm = (props) => {
 
   const selectDishTypeHandler = (event) => {
     setTypeOfDish(event.target.value);
-    // console.log(event.target.value);
   };
 
   return (
