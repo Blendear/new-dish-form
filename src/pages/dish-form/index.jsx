@@ -534,7 +534,7 @@ const SimpleForm = (props) => {
       {/* 
       //           3.3.3. JSX - renders the number on the "Pizza" PNG for the user to see
       */}
-      {typeOfDish === "Pizza" && (
+      {typeOfDish === "pizza" && (
         <div
           className={
             styles["form-new-dish-variant__image-of-dish-type__diameter"]
