@@ -32,8 +32,15 @@
 //
 //           3.1.1. Dynamic source path, depending on the states of "typeOfDish" & "nrOfImage"
 //
-//       3.2.. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
+//       3.2. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
 //
+//       3.3. Diameter, which is dynamically visualized on the "Pizza" PNG visualisation (which is rendered, when type "Pizza" is chosen)
+//
+//           3.3.1. Handler - changes diameter of "pizzaDiameter" (rendered on the "Pizza" PNG)
+//
+//           3.3.2. State - stores diameter value (rendered on the "Pizza" PNG)
+//
+//           3.3.3. JSX - renders the number on the "Pizza" PNG for the user to see
 //
 //
 //~~ 4.  "Submit" button makes a POST request with out dish data
@@ -167,7 +174,13 @@ const SimpleForm = (props) => {
 
   const [typeOfDish, setTypeOfDish] = useState("");
 
-  //       3.2.. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
+  //       3.3. Diameter, which is dynamically visualized on the "Pizza" PNG visualisation (which is rendered, when type "Pizza" is chosen)
+  //
+  //           3.3.2. State - stores diameter value (rendered on the "Pizza" PNG)
+
+  const [pizzaDiameter, setPizzaDiameter] = useState(23.0);
+
+  //       3.2. Handlers & State - Handlers for setting and storing the number state, which decides (together with "typeOfDish" state ) about which PNG image sohuld be rendered
 
   const [nrOfImage, setNrOfImage] = useState("2");
 
@@ -176,15 +189,9 @@ const SimpleForm = (props) => {
     if (newValue < 2 || newValue > 8) {
       return;
     }
-
     setNrOfImage(newValue);
   };
-  const changePizzaDiameterHandler = (event) => {
-    const newValue = event.target.value;
-    if (newValue < 23 || newValue > 48) {
-      return;
-    }
-  };
+
   const changeLevelOfSpicinessHandler = (event) => {
     const newValue = event.target.value;
     if (newValue < 1 || newValue > 10) {
@@ -201,6 +208,18 @@ const SimpleForm = (props) => {
 
     setNrOfImage(newValue);
   };
+
+  //           3.3.1. Handler - changes diameter of "pizzaDiameter" (rendered on the "Pizza" PNG)
+
+  const changePizzaDiameterHandler = (event) => {
+    const newValue = event.target.value;
+    if (newValue < 23 || newValue > 48) {
+      return;
+    }
+
+    setPizzaDiameter(newValue);
+  };
+
   //           2.3.1. JSX data of special input fields
 
   const [dishesSpecialInputFields, setDishesSpecialInputFields] = useState({
@@ -511,6 +530,18 @@ const SimpleForm = (props) => {
             priority
             loading="eager"
           />
+        </div>
+      )}
+      {/* 
+      //           3.3.3. JSX - renders the number on the "Pizza" PNG for the user to see
+      */}
+      {typeOfDish !== "" && (
+        <div
+          className={
+            styles["form-new-dish-variant__image-of-dish-type__diameter"]
+          }
+        >
+          {pizzaDiameter} <br /> cm
         </div>
       )}
     </form>

@@ -241,6 +241,12 @@
         aspect-ratio: 1;
       }
       &__diameter {
+        grid-row: r-8 / r-9;
+        grid-column: c-2 / c-6;
+        z-index: 100;
+        font-size: typography.$font-size-sm;
+        line-height: typography.$line-height-sm;
+        padding: 18% 0 0 30%;
       }
     }
   }
