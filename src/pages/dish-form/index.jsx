@@ -540,7 +540,8 @@ const SimpleForm = (props) => {
             styles["form-new-dish-variant__image-of-dish-type__diameter"]
           }
         >
-          {pizzaDiameter} <br /> cm
+          {pizzaDiameter} <br />
+          cm
         </div>
       )}
     </form>
